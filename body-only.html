@@ -1,167 +1,176 @@
-<style>
-    body {
-      font-family: system-ui, Arial;
-      line-height: 1.5;
-      padding: 20px;
-      background: #f5f7fa;
-      color: #111;
-    }
+<script>
+  // This is the only script tag you should need to edit
 
-    h1 {
-      text-align: center;
-    }
-
-    .carrusel {
-      position: relative;
-      max-width: 800px;
-      margin: 20px auto;
-      overflow: hidden;
-    }
-
-    .slides {
-      display: flex;
-      transition: transform 0.4s ease;
-    }
-
-    .slide {
-      flex: 0 0 100%;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-
-    .problema {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    }
-
-    label {
-      display: block;
-      margin: 8px 0 4px;
-      font-weight: 600;
-    }
-
-    input[type="number"],
-    select {
-      padding: 8px;
-      width: 180px;
-    }
-
-    button {
-      margin: 6px 6px 0 0;
-      padding: 8px 12px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      background: #f0f0f0;
-      cursor: pointer;
-    }
-
-    .feedback {
-      margin-top: 10px;
-      font-weight: 600;
-    }
-
-    .correcte {
-      color: #0b8457;
-    }
-
-    .incorrecte {
-      color: #b71c1c;
-    }
-
-    .solucio {
-      margin-top: 12px;
-      background: #f7f9fb;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px dashed #ccd;
-      display: none;
-      white-space: pre-wrap;
-    }
-
-    .controls {
-      text-align: center;
-      margin-top: 12px;
-    }
-
-    .controls button {
-      background: #e7ecf3;
-      border: 1px solid #bbb;
-    }
-
-    .nota {
-      font-size: 0.9em;
-      color: #555;
-      text-align: center;
-      margin-top: 20px;
-    }
-</style>
-<h1>Problemes autocorrectius: Lleis dels gasos (3r ESO)</h1>
-
-  <div class="carrusel">
-    <div class="slides" id="slides">
-      <!-- Slides will be generated dynamically from questionsData -->
-    </div>
-    <div class="controls">
-      <button onclick="prevSlide()">⬅️ Anterior</button>
-      <button onclick="nextSlide()">Següent ➡️</button>
-    </div>
-  </div>
-
-  <p class="nota">El sistema comprova la llei seleccionada i el resultat numèric (±0,05). Pots mostrar/ocultar la
-    solució pas a pas.</p>
-
-  <script>
-    // JSON data structure containing all questions
-    const questionsData = [
-      {
-        title: "Who's awesome?",
-        description: "Someone is awesome. Who could it be?",
-        inputLabel: "What number am I thinking of?",
-        correctAnswer: 3.14159265359,
-        correctLaw: "B",
-        solution: `Yeah that's the wrong number - they're all wrong numbers!
+  // JSON data structure containing all questions
+  const questionsData = [
+    {
+      title: "Who's awesome?",
+      description: "Someone is awesome. Who could it be?",
+      inputLabel: "What number am I thinking of?",
+      correctAnswer: 3.14159265359,
+      tolerance: 0.0001,
+      correctLaw: "B",
+      solution: `Yeah that's the wrong number - they're all wrong numbers!
 
         <img src=https://c.tenor.com/acoUxnXFEbUAAAAd/tenor.gif" />
 
 but you're still awesome!`
-      },
-      {
-        title: "Globus Aerostàtic",
-        description: "Un globus meteorològic conté <strong>2,5 L</strong> de gas a <strong>20°C (293 K)</strong> i <strong>1 atm</strong>. Si s'eleva i la pressió baixa a <strong>0,6 atm</strong>, quin volum ocuparà el gas?",
-        inputLabel: "Volum final (L):",
-        correctAnswer: 4.17,
-        correctLaw: "B",
-        solution: `Dades: V₁=2,5 L; P₁=1 atm; P₂=0,6 atm; T constant.  
+    },
+    {
+      title: "Globus Aerostàtic",
+      description: "Un globus meteorològic conté <strong>2,5 L</strong> de gas a <strong>20°C (293 K)</strong> i <strong>1 atm</strong>. Si s'eleva i la pressió baixa a <strong>0,6 atm</strong>, quin volum ocuparà el gas?",
+      inputLabel: "Volum final (L):",
+      correctAnswer: 4.17,
+      tolerance: 0,
+      correctLaw: "B",
+      solution: `Dades: V₁=2,5 L; P₁=1 atm; P₂=0,6 atm; T constant.  
 Fórmula (Boyle): P₁·V₁=P₂·V₂ → V₂ = P₁·V₁ / P₂.  
 Càlcul: V₂ = 1·2,5 / 0,6 ≈ 4,17 L.  
 El volum augmenta perquè la pressió disminueix.`
-      },
-      {
-        title: "Globus Aerostàtic",
-        description: "Un globus meteorològic conté <strong>2,5 L</strong> de gas a <strong>20°C (293 K)</strong> i <strong>1 atm</strong>. Si s'eleva i la pressió baixa a <strong>0,6 atm</strong>, quin volum ocuparà el gas?",
-        inputLabel: "Volum final (L):",
-        correctAnswer: 4.17,
-        correctLaw: "B",
-        solution: `Dades: V₁=2,5 L; P₁=1 atm; P₂=0,6 atm; T constant.  
+    },
+    {
+      title: "Globus Aerostàtic",
+      description: "Un globus meteorològic conté <strong>2,5 L</strong> de gas a <strong>20°C (293 K)</strong> i <strong>1 atm</strong>. Si s'eleva i la pressió baixa a <strong>0,6 atm</strong>, quin volum ocuparà el gas?",
+      inputLabel: "Volum final (L):",
+      correctAnswer: 4.17,
+      tolerance: 0.05,
+      correctLaw: "B",
+      solution: `Dades: V₁=2,5 L; P₁=1 atm; P₂=0,6 atm; T constant.  
 Fórmula (Boyle): P₁·V₁=P₂·V₂ → V₂ = P₁·V₁ / P₂.  
 Càlcul: V₂ = 1·2,5 / 0,6 ≈ 4,17 L.  
 El volum augmenta perquè la pressió disminueix.`
-      }
-    ];
+    }
+  ];
 
-    const TOL = 0.05;
+  // If a question does not define tolerance - this value is used
+  const defaultTolerance = 0.05;
 
-    // Generate slides from questionsData
-    function generateSlides() {
-      const slidesContainer = document.getElementById("slides");
-      slidesContainer.innerHTML = '';
+  // Don't edit below this line
+</script>
+<style>
+  body {
+    font-family: system-ui, Arial;
+    line-height: 1.5;
+    padding: 20px;
+    background: #f5f7fa;
+    color: #111;
+  }
 
-      questionsData.forEach((question, index) => {
-        const questionId = index + 1;
-        const slideHTML = `
+  h1 {
+    text-align: center;
+  }
+
+  .carrusel {
+    position: relative;
+    max-width: 800px;
+    margin: 20px auto;
+    overflow: hidden;
+  }
+
+  .slides {
+    display: flex;
+    transition: transform 0.4s ease;
+  }
+
+  .slide {
+    flex: 0 0 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .problema {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  label {
+    display: block;
+    margin: 8px 0 4px;
+    font-weight: 600;
+  }
+
+  input[type="number"],
+  select {
+    padding: 8px;
+    width: 180px;
+  }
+
+  button {
+    margin: 6px 6px 0 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #f0f0f0;
+    cursor: pointer;
+  }
+
+  .feedback {
+    margin-top: 10px;
+    font-weight: 600;
+  }
+
+  .correcte {
+    color: #0b8457;
+  }
+
+  .incorrecte {
+    color: #b71c1c;
+  }
+
+  .solucio {
+    margin-top: 12px;
+    background: #f7f9fb;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px dashed #ccd;
+    display: none;
+    white-space: pre-wrap;
+  }
+
+  .controls {
+    text-align: center;
+    margin-top: 12px;
+  }
+
+  .controls button {
+    background: #e7ecf3;
+    border: 1px solid #bbb;
+  }
+
+  .nota {
+    font-size: 0.9em;
+    color: #555;
+    text-align: center;
+    margin-top: 20px;
+  }
+</style>
+<h1>Problemes autocorrectius: Lleis dels gasos (3r ESO)</h1>
+
+<div class="carrusel">
+  <div class="slides" id="slides">
+    <!-- Slides will be generated dynamically from questionsData and placed here -->
+  </div>
+  <div class="controls">
+    <button onclick="prevSlide()">⬅️ Anterior</button>
+    <button onclick="nextSlide()">Següent ➡️</button>
+  </div>
+</div>
+
+<p class="nota">El sistema comprova la llei seleccionada i el resultat numèric (±0,05). Pots mostrar/ocultar la
+  solució pas a pas.</p>
+
+<script>
+  // Generate slides from questionsData
+  function generateSlides() {
+    const slidesContainer = document.getElementById("slides");
+    slidesContainer.innerHTML = '';
+
+    questionsData.forEach((question, index) => {
+      const questionId = index + 1;
+      const slideHTML = `
           <div class="slide">
             <div class="problema">
               <h2>Problema ${questionId} — ${question.title}</h2>
@@ -177,89 +186,98 @@ El volum augmenta perquè la pressió disminueix.`
               <input id="a${questionId}" type="number" step="0.01">
               <div>
                 <button onclick="check(${questionId})">Comprova</button>
-                <button onclick="showSol('s${questionId}')">Mostra solució</button>
+                <button onclick="showSolution('s${questionId}')">Mostra solució</button>
               </div>
               <div id="f${questionId}" class="feedback"></div>
               <div id="s${questionId}" class="solucio">${question.solution}</div>
             </div>
           </div>
         `;
-        slidesContainer.innerHTML += slideHTML;
-      });
-    }
-
-    function nearlyEqual(a, b, tol) {
-      return Math.abs(a - b) <= tol;
-    }
-
-    function showMessage(id, msg, ok) {
-      const el = document.getElementById(id);
-      el.innerHTML = msg;
-      el.className = "feedback " + (ok ? "correcte" : "incorrecte");
-    }
-
-    function parseInput(id) {
-      const v = document.getElementById(id).value;
-      if (v === "") return null;
-      return Number(v.replace(",", "."));
-    }
-
-    function showSol(id) {
-      const el = document.getElementById(id);
-      el.style.display = (el.style.display === "block") ? "none" : "block";
-    }
-
-    function check(n) {
-      const inp = parseInput("a" + n);
-      const law = document.getElementById("l" + n).value;
-
-      if (inp === null || law === "") {
-        showMessage("f" + n, "Cal posar resultat i llei", false);
-        return;
-      }
-
-      const question = questionsData[n - 1]; // Direct array access using index
-      if (!question) return;
-
-      const okNum = nearlyEqual(inp, question.correctAnswer, TOL);
-      const okLaw = (law === question.correctLaw);
-
-      if (okNum && okLaw) {
-        showMessage("f" + n, "Correcte ✅", true);
-      } else if (!okLaw) {
-        showMessage("f" + n, "La llei no és la correcta ❌", false);
-      } else {
-        showMessage("f" + n, "Resultat incorrecte ❌", false);
-      }
-    }
-
-    // Carousel functionality
-    let current = 0;
-    const slides = document.getElementById("slides");
-
-    function updateSlide() {
-      const total = questionsData.length;
-      slides.style.transform = "translateX(-" + (current * 100) + "%)";
-    }
-
-    function prevSlide() {
-      if (current > 0) {
-        current--;
-        updateSlide();
-      }
-    }
-
-    function nextSlide() {
-      if (current < questionsData.length - 1) {
-        current++;
-        updateSlide();
-      }
-    }
-
-    // Initialize the application
-    document.addEventListener('DOMContentLoaded', function () {
-      generateSlides();
-      updateSlide();
+      slidesContainer.innerHTML += slideHTML;
     });
-  </script>
+  }
 
+  // Check if two numbers are nearly equal within tolerance of each other
+  function nearlyEqual(a, b, tolerance) {
+    return Math.abs(a - b) <= tolerance;
+  }
+
+  function showMessage(id, msg, ok) {
+    const el = document.getElementById(id);
+    el.innerHTML = msg;
+    el.className = "feedback " + (ok ? "correcte" : "incorrecte");
+  }
+
+  // Js expects 1.23, Handle 1,23 transparently
+  function parseInput(id) {
+    const v = document.getElementById(id).value;
+    if (v === "") return null;
+    return Number(v.replace(",", "."));
+  }
+
+  function showSolution(id) {
+    const el = document.getElementById(id);
+    el.style.display = (el.style.display === "block") ? "none" : "block";
+  }
+
+  function check(n) {
+    const inp = parseInput("a" + n);
+    const law = document.getElementById("l" + n).value;
+
+    if (inp === null || law === "") {
+      showMessage("f" + n, "Cal posar resultat i llei", false);
+      return;
+    }
+
+    const question = questionsData[n - 1]; // Direct array access using index
+    if (!question) return;
+
+    const okNum = nearlyEqual(inp, question.correctAnswer, question.tolerance || defaultTolerance);
+    const okLaw = (law === question.correctLaw);
+
+    if (okNum && okLaw) {
+      showMessage("f" + n, "Correcte ✅", true);
+      return;
+    }
+
+    let messages = [];
+    if (!okLaw) {
+      messages.push("La llei no és la correcta ❌");
+    }
+
+    if (!okNum) {
+      messages.push("Resultat incorrecte ❌");
+    }
+
+    showMessage("f" + n, messages.join("<br />"), false);
+  }
+
+  // Carousel functionality
+  let current = 0;
+  const slides = document.getElementById("slides");
+
+  function updateSlide() {
+    const total = questionsData.length;
+    slides.style.transform = "translateX(-" + (current * 100) + "%)";
+  }
+
+  function prevSlide() {
+    if (current > 0) {
+      current--;
+      updateSlide();
+    }
+  }
+
+  function nextSlide() {
+    if (current < questionsData.length - 1) {
+      current++;
+      updateSlide();
+    }
+  }
+
+  // Initialize the application
+  document.addEventListener('DOMContentLoaded', function () {
+    generateSlides();
+    updateSlide();
+  });
+</script>
