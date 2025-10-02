@@ -1,166 +1,121 @@
 <style>
-  body {
-    font-family: system-ui, Arial;
-    line-height: 1.5;
-    padding: 20px;
-    background: #f5f7fa;
-    color: #111;
-  }
+    body {
+      font-family: system-ui, Arial;
+      line-height: 1.5;
+      padding: 20px;
+      background: #f5f7fa;
+      color: #111;
+    }
 
-  h1 {
-    text-align: center;
-  }
+    h1 {
+      text-align: center;
+    }
 
-  .carrusel {
-    position: relative;
-    max-width: 800px;
-    margin: 20px auto;
-    overflow: hidden;
-  }
+    .carrusel {
+      position: relative;
+      max-width: 800px;
+      margin: 20px auto;
+      overflow: hidden;
+    }
 
-  .slides {
-    display: flex;
-    transition: transform 0.4s ease;
-  }
+    .slides {
+      display: flex;
+      transition: transform 0.4s ease;
+    }
 
-  .slide {
-    flex: 0 0 100%;
-    padding: 20px;
-    box-sizing: border-box;
-  }
+    .slide {
+      flex: 0 0 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
 
-  .problema {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  }
+    .problema {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
 
-  label {
-    display: block;
-    margin: 8px 0 4px;
-    font-weight: 600;
-  }
+    label {
+      display: block;
+      margin: 8px 0 4px;
+      font-weight: 600;
+    }
 
-  input[type="number"],
-  select {
-    padding: 8px;
-    width: 180px;
-  }
+    input[type="number"],
+    select {
+      padding: 8px;
+      width: 180px;
+    }
 
-  button {
-    margin: 6px 6px 0 0;
-    padding: 8px 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    background: #f0f0f0;
-    cursor: pointer;
-  }
+    button {
+      margin: 6px 6px 0 0;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: #f0f0f0;
+      cursor: pointer;
+    }
 
-  .feedback {
-    margin-top: 10px;
-    font-weight: 600;
-  }
+    .feedback {
+      margin-top: 10px;
+      font-weight: 600;
+    }
 
-  .correcte {
-    color: #0b8457;
-  }
+    .correcte {
+      color: #0b8457;
+    }
 
-  .incorrecte {
-    color: #b71c1c;
-  }
+    .incorrecte {
+      color: #b71c1c;
+    }
 
-  .solucio {
-    margin-top: 12px;
-    background: #f7f9fb;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px dashed #ccd;
-    display: none;
-    white-space: pre-wrap;
-  }
+    .solucio {
+      margin-top: 12px;
+      background: #f7f9fb;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px dashed #ccd;
+      display: none;
+      white-space: pre-wrap;
+    }
 
-  .controls {
-    text-align: center;
-    margin-top: 12px;
-  }
+    .controls {
+      text-align: center;
+      margin-top: 12px;
+    }
 
-  .controls button {
-    background: #e7ecf3;
-    border: 1px solid #bbb;
-  }
+    .controls button {
+      background: #e7ecf3;
+      border: 1px solid #bbb;
+    }
 
-  .nota {
-    font-size: 0.9em;
-    color: #555;
-    text-align: center;
-    margin-top: 20px;
-  }
+    .nota {
+      font-size: 0.9em;
+      color: #555;
+      text-align: center;
+      margin-top: 20px;
+    }
 </style>
 <h1>Problemes autocorrectius: Lleis dels gasos (3r ESO)</h1>
 
-<div class="carrusel">
-  <div class="slides" id="slides">
-    <!-- Slides will be generated dynamically from questionsData -->
+  <div class="carrusel">
+    <div class="slides" id="slides">
+      <!-- Slides will be generated dynamically from questionsData -->
+    </div>
+    <div class="controls">
+      <button onclick="prevSlide()">⬅️ Anterior</button>
+      <button onclick="nextSlide()">Següent ➡️</button>
+    </div>
   </div>
-  <div class="controls">
-    <button onclick="prevSlide()">⬅️ Anterior</button>
-    <button onclick="nextSlide()">Següent ➡️</button>
-  </div>
-</div>
 
-<p class="nota">El sistema comprova la llei seleccionada i el resultat numèric (±0,05). Pots mostrar/ocultar la
-  solució pas a pas.</p>
+  <p class="nota">El sistema comprova la llei seleccionada i el resultat numèric (±0,05). Pots mostrar/ocultar la
+    solució pas a pas.</p>
 
-<script>
-  // Global variables
-  let questionsData = [];
-  const TOL = 0.05;
-
-  // Configuration: URL to fetch JSON data from
-  const DATA_URL = 'https://raw.githubusercontent.com/aurorafqteacher/experiment1/refs/heads/main/questions.json'
-
-  // Function to fetch questions data from external URL
-  async function loadQuestionsData() {
-    try {
-      showLoadingMessage();
-      const response = await fetch(DATA_URL);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      // If your JSON structure is different, you may need to adapt this
-      // For demonstration, we'll use a fallback structure if the URL doesn't match expected format
-      if (Array.isArray(data) && data.length > 0 && !data[0].title) {
-        // Fallback: create sample questions from generic JSON data
-        questionsData = createSampleQuestions();
-      } else {
-        questionsData = data;
-      }
-
-      hideLoadingMessage();
-      generateSlides();
-      updateSlide();
-
-    } catch (error) {
-      console.error('Error loading questions data:', error);
-      hideLoadingMessage();
-      showErrorMessage('Error loading questions. Please check your internet connection and try again.');
-
-      // Fallback to sample data
-      questionsData = createSampleQuestions();
-      generateSlides();
-      updateSlide();
-    }
-  }
-
-  // Create sample questions as fallback
-  function createSampleQuestions() {
-    return [
+  <script>
+    // JSON data structure containing all questions
+    const questionsData = [
       {
         title: "Who's awesome?",
         description: "Someone is awesome. Who could it be?",
@@ -169,7 +124,7 @@
         correctLaw: "B",
         solution: `Yeah that's the wrong number - they're all wrong numbers!
 
-        <img src="https://c.tenor.com/acoUxnXFEbUAAAAd/tenor.gif" />
+        <img src=https://c.tenor.com/acoUxnXFEbUAAAAd/tenor.gif" />
 
 but you're still awesome!`
       },
@@ -185,7 +140,7 @@ Càlcul: V₂ = 1·2,5 / 0,6 ≈ 4,17 L.
 El volum augmenta perquè la pressió disminueix.`
       },
       {
-        title: "Globus Aerostàtic 2",
+        title: "Globus Aerostàtic",
         description: "Un globus meteorològic conté <strong>2,5 L</strong> de gas a <strong>20°C (293 K)</strong> i <strong>1 atm</strong>. Si s'eleva i la pressió baixa a <strong>0,6 atm</strong>, quin volum ocuparà el gas?",
         inputLabel: "Volum final (L):",
         correctAnswer: 4.17,
@@ -196,48 +151,17 @@ Càlcul: V₂ = 1·2,5 / 0,6 ≈ 4,17 L.
 El volum augmenta perquè la pressió disminueix.`
       }
     ];
-  }
 
-  // Show loading message
-  function showLoadingMessage() {
-    const slidesContainer = document.getElementById("slides");
-    slidesContainer.innerHTML = `
-        <div class="slide">
-          <div class="problema">
-            <h2>Loading questions...</h2>
-            <p>Please wait while we fetch the latest questions.</p>
-          </div>
-        </div>
-      `;
-  }
+    const TOL = 0.05;
 
-  // Hide loading message
-  function hideLoadingMessage() {
-    // This will be replaced by generateSlides()
-  }
+    // Generate slides from questionsData
+    function generateSlides() {
+      const slidesContainer = document.getElementById("slides");
+      slidesContainer.innerHTML = '';
 
-  // Show error message
-  function showErrorMessage(message) {
-    const slidesContainer = document.getElementById("slides");
-    slidesContainer.innerHTML = `
-        <div class="slide">
-          <div class="problema">
-            <h2>⚠️ Error</h2>
-            <p>${message}</p>
-            <button onclick="loadQuestionsData()">Try Again</button>
-          </div>
-        </div>
-      `;
-  }
-
-  // Generate slides from questionsData
-  function generateSlides() {
-    const slidesContainer = document.getElementById("slides");
-    slidesContainer.innerHTML = '';
-
-    questionsData.forEach((question, index) => {
-      const questionId = index + 1;
-      const slideHTML = `
+      questionsData.forEach((question, index) => {
+        const questionId = index + 1;
+        const slideHTML = `
           <div class="slide">
             <div class="problema">
               <h2>Problema ${questionId} — ${question.title}</h2>
@@ -260,80 +184,82 @@ El volum augmenta perquè la pressió disminueix.`
             </div>
           </div>
         `;
-      slidesContainer.innerHTML += slideHTML;
+        slidesContainer.innerHTML += slideHTML;
+      });
+    }
+
+    function nearlyEqual(a, b, tol) {
+      return Math.abs(a - b) <= tol;
+    }
+
+    function showMessage(id, msg, ok) {
+      const el = document.getElementById(id);
+      el.innerHTML = msg;
+      el.className = "feedback " + (ok ? "correcte" : "incorrecte");
+    }
+
+    function parseInput(id) {
+      const v = document.getElementById(id).value;
+      if (v === "") return null;
+      return Number(v.replace(",", "."));
+    }
+
+    function showSol(id) {
+      const el = document.getElementById(id);
+      el.style.display = (el.style.display === "block") ? "none" : "block";
+    }
+
+    function check(n) {
+      const inp = parseInput("a" + n);
+      const law = document.getElementById("l" + n).value;
+
+      if (inp === null || law === "") {
+        showMessage("f" + n, "Cal posar resultat i llei", false);
+        return;
+      }
+
+      const question = questionsData[n - 1]; // Direct array access using index
+      if (!question) return;
+
+      const okNum = nearlyEqual(inp, question.correctAnswer, TOL);
+      const okLaw = (law === question.correctLaw);
+
+      if (okNum && okLaw) {
+        showMessage("f" + n, "Correcte ✅", true);
+      } else if (!okLaw) {
+        showMessage("f" + n, "La llei no és la correcta ❌", false);
+      } else {
+        showMessage("f" + n, "Resultat incorrecte ❌", false);
+      }
+    }
+
+    // Carousel functionality
+    let current = 0;
+    const slides = document.getElementById("slides");
+
+    function updateSlide() {
+      const total = questionsData.length;
+      slides.style.transform = "translateX(-" + (current * 100) + "%)";
+    }
+
+    function prevSlide() {
+      if (current > 0) {
+        current--;
+        updateSlide();
+      }
+    }
+
+    function nextSlide() {
+      if (current < questionsData.length - 1) {
+        current++;
+        updateSlide();
+      }
+    }
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function () {
+      generateSlides();
+      updateSlide();
     });
-  }
+  </script>
 
-  function nearlyEqual(a, b, tol) {
-    return Math.abs(a - b) <= tol;
-  }
-
-  function showMessage(id, msg, ok) {
-    const el = document.getElementById(id);
-    el.innerHTML = msg;
-    el.className = "feedback " + (ok ? "correcte" : "incorrecte");
-  }
-
-  function parseInput(id) {
-    const v = document.getElementById(id).value;
-    if (v === "") return null;
-    return Number(v.replace(",", "."));
-  }
-
-  function showSol(id) {
-    const el = document.getElementById(id);
-    el.style.display = (el.style.display === "block") ? "none" : "block";
-  }
-
-  function check(n) {
-    const inp = parseInput("a" + n);
-    const law = document.getElementById("l" + n).value;
-
-    if (inp === null || law === "") {
-      showMessage("f" + n, "Cal posar resultat i llei", false);
-      return;
-    }
-
-    const question = questionsData[n - 1]; // Direct array access using index
-    if (!question) return;
-
-    const okNum = nearlyEqual(inp, question.correctAnswer, TOL);
-    const okLaw = (law === question.correctLaw);
-
-    if (okNum && okLaw) {
-      showMessage("f" + n, "Correcte ✅", true);
-    } else if (!okLaw) {
-      showMessage("f" + n, "La llei no és la correcta ❌", false);
-    } else {
-      showMessage("f" + n, "Resultat incorrecte ❌", false);
-    }
-  }
-
-  // Carousel functionality
-  let current = 0;
-  const slides = document.getElementById("slides");
-
-  function updateSlide() {
-    const total = questionsData.length;
-    slides.style.transform = "translateX(-" + (current * 100) + "%)";
-  }
-
-  function prevSlide() {
-    if (current > 0) {
-      current--;
-      updateSlide();
-    }
-  }
-
-  function nextSlide() {
-    if (current < questionsData.length - 1) {
-      current++;
-      updateSlide();
-    }
-  }
-
-  // Initialize the application
-  document.addEventListener('DOMContentLoaded', function () {
-    loadQuestionsData(); // Load data from external URL
-  });
-</script>
