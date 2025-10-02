@@ -5,6 +5,56 @@
   <meta charset="utf-8" />
   <title>Problemes autocorrectius amb lleis dels gasos (3r ESO)</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script>
+    // This is the only script tag you should need to edit
+
+    // JSON data structure containing all questions
+    const questionsData = [
+      {
+        title: "Who's awesome?",
+        description: "Someone is awesome. Who could it be?",
+        inputLabel: "What number am I thinking of?",
+        correctAnswer: 3.14159265359,
+        tolerance: 0.0001,
+        correctLaw: "B",
+        solution: `Yeah that's the wrong number - they're all wrong numbers!
+
+        <img src=https://c.tenor.com/acoUxnXFEbUAAAAd/tenor.gif" />
+
+but you're still awesome!`
+      },
+      {
+        title: "Globus Aerostàtic",
+        description: "Un globus meteorològic conté <strong>2,5 L</strong> de gas a <strong>20°C (293 K)</strong> i <strong>1 atm</strong>. Si s'eleva i la pressió baixa a <strong>0,6 atm</strong>, quin volum ocuparà el gas?",
+        inputLabel: "Volum final (L):",
+        correctAnswer: 4.17,
+        tolerance: 0,
+        correctLaw: "B",
+        solution: `Dades: V₁=2,5 L; P₁=1 atm; P₂=0,6 atm; T constant.  
+Fórmula (Boyle): P₁·V₁=P₂·V₂ → V₂ = P₁·V₁ / P₂.  
+Càlcul: V₂ = 1·2,5 / 0,6 ≈ 4,17 L.  
+El volum augmenta perquè la pressió disminueix.`
+      },
+      {
+        title: "Globus Aerostàtic",
+        description: "Un globus meteorològic conté <strong>2,5 L</strong> de gas a <strong>20°C (293 K)</strong> i <strong>1 atm</strong>. Si s'eleva i la pressió baixa a <strong>0,6 atm</strong>, quin volum ocuparà el gas?",
+        inputLabel: "Volum final (L):",
+        correctAnswer: 4.17,
+        tolerance: 0.05,
+        correctLaw: "B",
+        solution: `Dades: V₁=2,5 L; P₁=1 atm; P₂=0,6 atm; T constant.  
+Fórmula (Boyle): P₁·V₁=P₂·V₂ → V₂ = P₁·V₁ / P₂.  
+Càlcul: V₂ = 1·2,5 / 0,6 ≈ 4,17 L.  
+El volum augmenta perquè la pressió disminueix.`
+      }
+    ];
+
+    // If a question does not define tolerance - this value is used
+    const defaultTolerance = 0.05;
+
+    // Don't edit below this line
+  </script>
+
   <style>
     body {
       font-family: system-ui, Arial;
@@ -124,46 +174,6 @@
     solució pas a pas.</p>
 
   <script>
-    // JSON data structure containing all questions
-    const questionsData = [
-      {
-        title: "Who's awesome?",
-        description: "Someone is awesome. Who could it be?",
-        inputLabel: "What number am I thinking of?",
-        correctAnswer: 3.14159265359,
-        correctLaw: "B",
-        solution: `Yeah that's the wrong number - they're all wrong numbers!
-
-        <img src=https://c.tenor.com/acoUxnXFEbUAAAAd/tenor.gif" />
-
-but you're still awesome!`
-      },
-      {
-        title: "Globus Aerostàtic",
-        description: "Un globus meteorològic conté <strong>2,5 L</strong> de gas a <strong>20°C (293 K)</strong> i <strong>1 atm</strong>. Si s'eleva i la pressió baixa a <strong>0,6 atm</strong>, quin volum ocuparà el gas?",
-        inputLabel: "Volum final (L):",
-        correctAnswer: 4.17,
-        correctLaw: "B",
-        solution: `Dades: V₁=2,5 L; P₁=1 atm; P₂=0,6 atm; T constant.  
-Fórmula (Boyle): P₁·V₁=P₂·V₂ → V₂ = P₁·V₁ / P₂.  
-Càlcul: V₂ = 1·2,5 / 0,6 ≈ 4,17 L.  
-El volum augmenta perquè la pressió disminueix.`
-      },
-      {
-        title: "Globus Aerostàtic",
-        description: "Un globus meteorològic conté <strong>2,5 L</strong> de gas a <strong>20°C (293 K)</strong> i <strong>1 atm</strong>. Si s'eleva i la pressió baixa a <strong>0,6 atm</strong>, quin volum ocuparà el gas?",
-        inputLabel: "Volum final (L):",
-        correctAnswer: 4.17,
-        correctLaw: "B",
-        solution: `Dades: V₁=2,5 L; P₁=1 atm; P₂=0,6 atm; T constant.  
-Fórmula (Boyle): P₁·V₁=P₂·V₂ → V₂ = P₁·V₁ / P₂.  
-Càlcul: V₂ = 1·2,5 / 0,6 ≈ 4,17 L.  
-El volum augmenta perquè la pressió disminueix.`
-      }
-    ];
-
-    const TOL = 0.05;
-
     // Generate slides from questionsData
     function generateSlides() {
       const slidesContainer = document.getElementById("slides");
@@ -187,7 +197,7 @@ El volum augmenta perquè la pressió disminueix.`
               <input id="a${questionId}" type="number" step="0.01">
               <div>
                 <button onclick="check(${questionId})">Comprova</button>
-                <button onclick="showSol('s${questionId}')">Mostra solució</button>
+                <button onclick="showSolution('s${questionId}')">Mostra solució</button>
               </div>
               <div id="f${questionId}" class="feedback"></div>
               <div id="s${questionId}" class="solucio">${question.solution}</div>
@@ -198,8 +208,9 @@ El volum augmenta perquè la pressió disminueix.`
       });
     }
 
-    function nearlyEqual(a, b, tol) {
-      return Math.abs(a - b) <= tol;
+    // Check if two numbers are nearly equal within tolerance of each other
+    function nearlyEqual(a, b, tolerance) {
+      return Math.abs(a - b) <= tolerance;
     }
 
     function showMessage(id, msg, ok) {
@@ -208,13 +219,14 @@ El volum augmenta perquè la pressió disminueix.`
       el.className = "feedback " + (ok ? "correcte" : "incorrecte");
     }
 
+    // Js expects 1.23, Handle 1,23 transparently
     function parseInput(id) {
       const v = document.getElementById(id).value;
       if (v === "") return null;
       return Number(v.replace(",", "."));
     }
 
-    function showSol(id) {
+    function showSolution(id) {
       const el = document.getElementById(id);
       el.style.display = (el.style.display === "block") ? "none" : "block";
     }
@@ -231,16 +243,24 @@ El volum augmenta perquè la pressió disminueix.`
       const question = questionsData[n - 1]; // Direct array access using index
       if (!question) return;
 
-      const okNum = nearlyEqual(inp, question.correctAnswer, TOL);
+      const okNum = nearlyEqual(inp, question.correctAnswer, question.tolerance || defaultTolerance);
       const okLaw = (law === question.correctLaw);
 
       if (okNum && okLaw) {
         showMessage("f" + n, "Correcte ✅", true);
-      } else if (!okLaw) {
-        showMessage("f" + n, "La llei no és la correcta ❌", false);
-      } else {
-        showMessage("f" + n, "Resultat incorrecte ❌", false);
+        return;
       }
+
+      let messages = [];
+      if (!okLaw) {
+        messages.push("La llei no és la correcta ❌");
+      }
+
+      if (!okNum) {
+        messages.push("Resultat incorrecte ❌");
+      }
+
+      showMessage("f" + n, messages.join("<br />"), false);
     }
 
     // Carousel functionality
