@@ -1,0 +1,34 @@
+[
+    {
+        "title": "Who's awesome?",
+        "description": "Someone is awesome. Who could it be?",
+        "inputLabel": "What number am I thinking of?",
+        "correctAnswer": 3.14159265359,
+        "correctLaw": "B",
+        "solution": "Yeah that's the wrong number - they're all wrong numbers!\n\n<img src=\"https://c.tenor.com/acoUxnXFEbUAAAAd/tenor.gif\" />\n\nbut you're still awesome!"
+    },
+    {
+        "title": "Globus Aerostàtic",
+        "description": "Un globus meteorològic conté <strong>2,5 L</strong> de gas a <strong>20°C (293 K)</strong> i <strong>1 atm</strong>. Si s'eleva i la pressió baixa a <strong>0,6 atm</strong>, quin volum ocuparà el gas?",
+        "inputLabel": "Volum final (L):",
+        "correctAnswer": 4.17,
+        "correctLaw": "B",
+        "solution": "Dades: V₁=2,5 L; P₁=1 atm; P₂=0,6 atm; T constant.\nFórmula (Boyle): P₁·V₁=P₂·V₂ → V₂ = P₁·V₁ / P₂.\nCàlcul: V₂ = 1·2,5 / 0,6 ≈ 4,17 L.\nEl volum augmenta perquè la pressió disminueix."
+    },
+    {
+        "title": "Escalfament del Gas",
+        "description": "Un recipient conté gas a <strong>25°C (298 K)</strong> amb un volum de <strong>3,2 L</strong>. Si s'escalfa fins a <strong>75°C (348 K)</strong> mantenint la pressió constant, quin serà el nou volum?",
+        "inputLabel": "Volum final (L):",
+        "correctAnswer": 3.74,
+        "correctLaw": "C",
+        "solution": "Dades: V₁=3,2 L; T₁=298 K; T₂=348 K; P constant.\nFórmula (Charles): V₁/T₁=V₂/T₂ → V₂ = V₁·T₂ / T₁.\nCàlcul: V₂ = 3,2·348 / 298 ≈ 3,74 L.\nEl volum augmenta perquè la temperatura augmenta."
+    },
+    {
+        "title": "Pressió i Temperatura",
+        "description": "Un gas en un recipient rígid té una pressió de <strong>2,1 atm</strong> a <strong>27°C (300 K)</strong>. Si es refreda fins a <strong>-23°C (250 K)</strong>, quina serà la nova pressió?",
+        "inputLabel": "Pressió final (atm):",
+        "correctAnswer": 1.75,
+        "correctLaw": "G",
+        "solution": "Dades: P₁=2,1 atm; T₁=300 K; T₂=250 K; V constant.\nFórmula (Gay-Lussac): P₁/T₁=P₂/T₂ → P₂ = P₁·T₂ / T₁.\nCàlcul: P₂ = 2,1·250 / 300 ≈ 1,75 atm.\nLa pressió disminueix perquè la temperatura disminueix."
+    }
+]
