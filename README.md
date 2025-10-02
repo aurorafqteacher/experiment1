@@ -2,6 +2,17 @@
 
 An example physics quiz for students.
 
+## Setup
+
+### Tolerance
+
+`defaultTolerance` defines the tolerance used if a question doesn't define its
+own tolerance.
+
+### How many questions
+
+`numberOfQuestions` - this many questions are picked at random from the list.
+
 ## Making changes to questions
 
 At the top of the page is a script tag including the question data, it's
@@ -31,7 +42,9 @@ Download `body-only.html` save it to a file with the `.html` extension and open
 it. It should just-work, if it does not you can open the file by typing in your
 browser location bar `file:/// .... path to /body-only.html`.
 
-You won't need `index.html` but it's provided anyway just in case.
+Note that the file is incomplete (has no `head` or `body`) so browsers may warn
+about this, but it doesn't matter because that's not how this content is going
+to be used.
 
 ## Uploading to exe learning
 

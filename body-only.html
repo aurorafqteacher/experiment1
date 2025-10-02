@@ -1,33 +1,14 @@
 <script>
   // This is the only script tag you should need to edit
 
+  // If a question does not define tolerance - this value is used
+  const defaultTolerance = 0.05;
+
+  // Configuration: How many random questions to show (0 = show all)
+  const numberOfQuestionsToShow = 5; // Change this number as needed
+
   // JSON data structure containing all questions
   const questionsData = [
-    {
-      title: "Who's awesome?",
-      description: "Someone is awesome. Who could it be?",
-      inputLabel: "What number am I thinking of?",
-      correctAnswer: 3.14159265359,
-      tolerance: 0.0001,
-      correctLaw: "B",
-      solution: `Yeah that's the wrong number - they're all wrong numbers!
-
-        <img src=https://c.tenor.com/acoUxnXFEbUAAAAd/tenor.gif" />
-
-but you're still awesome!`
-    },
-    {
-      title: "Globus Aerostàtic",
-      description: "Un globus meteorològic conté <strong>2,5 L</strong> de gas a <strong>20°C (293 K)</strong> i <strong>1 atm</strong>. Si s'eleva i la pressió baixa a <strong>0,6 atm</strong>, quin volum ocuparà el gas?",
-      inputLabel: "Volum final (L):",
-      correctAnswer: 4.17,
-      tolerance: 0,
-      correctLaw: "B",
-      solution: `Dades: V₁=2,5 L; P₁=1 atm; P₂=0,6 atm; T constant.  
-Fórmula (Boyle): P₁·V₁=P₂·V₂ → V₂ = P₁·V₁ / P₂.  
-Càlcul: V₂ = 1·2,5 / 0,6 ≈ 4,17 L.  
-El volum augmenta perquè la pressió disminueix.`
-    },
     {
       title: "Globus Aerostàtic",
       description: "Un globus meteorològic conté <strong>2,5 L</strong> de gas a <strong>20°C (293 K)</strong> i <strong>1 atm</strong>. Si s'eleva i la pressió baixa a <strong>0,6 atm</strong>, quin volum ocuparà el gas?",
@@ -35,15 +16,180 @@ El volum augmenta perquè la pressió disminueix.`
       correctAnswer: 4.17,
       tolerance: 0.05,
       correctLaw: "B",
-      solution: `Dades: V₁=2,5 L; P₁=1 atm; P₂=0,6 atm; T constant.  
-Fórmula (Boyle): P₁·V₁=P₂·V₂ → V₂ = P₁·V₁ / P₂.  
-Càlcul: V₂ = 1·2,5 / 0,6 ≈ 4,17 L.  
+      solution: `Dades: V₁=2,5 L; P₁=1 atm; P₂=0,6 atm; T constant.
+Fórmula (Boyle): P₁·V₁=P₂·V₂ → V₂ = P₁·V₁ / P₂.
+Càlcul: V₂ = 1·2,5 / 0,6 ≈ 4,17 L.
 El volum augmenta perquè la pressió disminueix.`
+    },
+    {
+      title: "Bomba d'Aire",
+      description: "Una bomba d'aire comprimeix <strong>5 L</strong> d'aire a <strong>1 atm</strong> fins a un volum de <strong>1,5 L</strong>. Quina serà la pressió final?",
+      inputLabel: "Pressió final (atm):",
+      correctAnswer: 3.33,
+      tolerance: 0.05,
+      correctLaw: "B",
+      solution: `Dades: V₁=5 L; P₁=1 atm; V₂=1,5 L; T constant.
+Fórmula (Boyle): P₁·V₁=P₂·V₂ → P₂ = P₁·V₁ / V₂.
+Càlcul: P₂ = 1·5 / 1,5 ≈ 3,33 atm.
+La pressió augmenta en comprimir el gas.`
+    },
+    {
+      title: "Escalfament Solar",
+      description: "Un gas en un recipient conté <strong>3,2 L</strong> a <strong>25°C (298 K)</strong>. Si s'escalfa pel sol fins a <strong>75°C (348 K)</strong> mantenint la pressió constant, quin serà el nou volum?",
+      inputLabel: "Volum final (L):",
+      correctAnswer: 3.74,
+      tolerance: 0.05,
+      correctLaw: "C",
+      solution: `Dades: V₁=3,2 L; T₁=298 K; T₂=348 K; P constant.
+Fórmula (Charles): V₁/T₁=V₂/T₂ → V₂ = V₁·T₂ / T₁.
+Càlcul: V₂ = 3,2·348 / 298 ≈ 3,74 L.
+El volum augmenta amb la temperatura.`
+    },
+    {
+      title: "Refredament Hivernal",
+      description: "Un pneumàtic té <strong>45 L</strong> d'aire a <strong>20°C (293 K)</strong>. A l'hivern, la temperatura baixa a <strong>-10°C (263 K)</strong>. Quin volum ocuparà l'aire?",
+      inputLabel: "Volum final (L):",
+      correctAnswer: 40.41,
+      tolerance: 0.1,
+      correctLaw: "C",
+      solution: `Dades: V₁=45 L; T₁=293 K; T₂=263 K; P constant.
+Fórmula (Charles): V₁/T₁=V₂/T₂ → V₂ = V₁·T₂ / T₁.
+Càlcul: V₂ = 45·263 / 293 ≈ 40,41 L.
+El volum disminueix amb la temperatura.`
+    },
+    {
+      title: "Escalfament d'Aire",
+      description: "L'aire d'una habitació passa de <strong>18°C (291 K)</strong> a <strong>28°C (301 K)</strong> en un recipient rígid de <strong>50 L</strong>. Si la pressió inicial era <strong>1,2 atm</strong>, quina serà la final?",
+      inputLabel: "Pressió final (atm):",
+      correctAnswer: 1.24,
+      tolerance: 0.02,
+      correctLaw: "G",
+      solution: `Dades: P₁=1,2 atm; T₁=291 K; T₂=301 K; V constant.
+Fórmula (Gay-Lussac): P₁/T₁=P₂/T₂ → P₂ = P₁·T₂ / T₁.
+Càlcul: P₂ = 1,2·301 / 291 ≈ 1,24 atm.
+La pressió augmenta amb la temperatura.`
+    },
+    {
+      title: "Botella de Gas",
+      description: "Una botella de gas té una pressió de <strong>8 atm</strong> a <strong>25°C (298 K)</strong>. Si es refreda fins a <strong>0°C (273 K)</strong>, quina serà la nova pressió?",
+      inputLabel: "Pressió final (atm):",
+      correctAnswer: 7.32,
+      tolerance: 0.05,
+      correctLaw: "G",
+      solution: `Dades: P₁=8 atm; T₁=298 K; T₂=273 K; V constant.
+Fórmula (Gay-Lussac): P₁/T₁=P₂/T₂ → P₂ = P₁·T₂ / T₁.
+Càlcul: P₂ = 8·273 / 298 ≈ 7,32 atm.
+La pressió disminueix amb la temperatura.`
+    },
+    {
+      title: "Submarí",
+      description: "Un submarí té una bombolla d'aire de <strong>0,8 L</strong> a <strong>3 atm</strong> de pressió. Si puja a la superfície on la pressió és <strong>1 atm</strong>, quin volum tindrà la bombolla?",
+      inputLabel: "Volum final (L):",
+      correctAnswer: 2.4,
+      tolerance: 0.05,
+      correctLaw: "B",
+      solution: `Dades: V₁=0,8 L; P₁=3 atm; P₂=1 atm; T constant.
+Fórmula (Boyle): P₁·V₁=P₂·V₂ → V₂ = P₁·V₁ / P₂.
+Càlcul: V₂ = 3·0,8 / 1 = 2,4 L.
+El volum augmenta en disminuir la pressió.`
+    },
+    {
+      title: "Jeringa Mèdica",
+      description: "Una jeringa conté <strong>20 mL</strong> d'aire a <strong>1 atm</strong>. Si es comprimeix fins a <strong>5 mL</strong>, quina pressió s'assoleix?",
+      inputLabel: "Pressió final (atm):",
+      correctAnswer: 4.0,
+      tolerance: 0.1,
+      correctLaw: "B",
+      solution: `Dades: V₁=20 mL; P₁=1 atm; V₂=5 mL; T constant.
+Fórmula (Boyle): P₁·V₁=P₂·V₂ → P₂ = P₁·V₁ / V₂.
+Càlcul: P₂ = 1·20 / 5 = 4 atm.
+La pressió augmenta en comprimir el gas.`
+    },
+    {
+      title: "Globus d'Heli",
+      description: "Un globus d'heli té <strong>2 L</strong> a <strong>15°C (288 K)</strong>. Si es porta a l'interior a <strong>22°C (295 K)</strong>, quin volum tindrà?",
+      inputLabel: "Volum final (L):",
+      correctAnswer: 2.05,
+      tolerance: 0.02,
+      correctLaw: "C",
+      solution: `Dades: V₁=2 L; T₁=288 K; T₂=295 K; P constant.
+Fórmula (Charles): V₁/T₁=V₂/T₂ → V₂ = V₁·T₂ / T₁.
+Càlcul: V₂ = 2·295 / 288 ≈ 2,05 L.
+El volum augmenta lleugerament amb la temperatura.`
+    },
+    {
+      title: "Cuina a Pressió",
+      description: "Una olla a pressió té vapor d'aigua a <strong>2,5 atm</strong> i <strong>120°C (393 K)</strong>. Si es refreda fins a <strong>100°C (373 K)</strong>, quina serà la pressió?",
+      inputLabel: "Pressió final (atm):",
+      correctAnswer: 2.37,
+      tolerance: 0.05,
+      correctLaw: "G",
+      solution: `Dades: P₁=2,5 atm; T₁=393 K; T₂=373 K; V constant.
+Fórmula (Gay-Lussac): P₁/T₁=P₂/T₂ → P₂ = P₁·T₂ / T₁.
+Càlcul: P₂ = 2,5·373 / 393 ≈ 2,37 atm.
+La pressió disminueix en refredar-se.`
+    },
+    {
+      title: "Laboratori Criogènic",
+      description: "Un gas a <strong>-50°C (223 K)</strong> ocupa <strong>1,8 L</strong>. Si s'escalfa fins a <strong>50°C (323 K)</strong>, quin volum ocuparà?",
+      inputLabel: "Volum final (L):",
+      correctAnswer: 2.61,
+      tolerance: 0.05,
+      correctLaw: "C",
+      solution: `Dades: V₁=1,8 L; T₁=223 K; T₂=323 K; P constant.
+Fórmula (Charles): V₁/T₁=V₂/T₂ → V₂ = V₁·T₂ / T₁.
+Càlcul: V₂ = 1,8·323 / 223 ≈ 2,61 L.
+Gran augment de volum per l'escalfament.`
+    },
+    {
+      title: "Bomba de Bicicleta",
+      description: "En bombar aire, es comprimeixen <strong>300 mL</strong> a <strong>1 atm</strong> fins a <strong>50 mL</strong>. Quina pressió es genera?",
+      inputLabel: "Pressió final (atm):",
+      correctAnswer: 6.0,
+      tolerance: 0.1,
+      correctLaw: "B",
+      solution: `Dades: V₁=300 mL; P₁=1 atm; V₂=50 mL; T constant.
+Fórmula (Boyle): P₁·V₁=P₂·V₂ → P₂ = P₁·V₁ / V₂.
+Càlcul: P₂ = 1·300 / 50 = 6 atm.
+Alta pressió per la gran compressió.`
+    },
+    {
+      title: "Motor de Cotxe",
+      description: "Els gasos del motor passen de <strong>600°C (873 K)</strong> a <strong>200°C (473 K)</strong> en un cilindre fix. Si la pressió inicial era <strong>15 atm</strong>, quina serà la final?",
+      inputLabel: "Pressió final (atm):",
+      correctAnswer: 8.13,
+      tolerance: 0.1,
+      correctLaw: "G",
+      solution: `Dades: P₁=15 atm; T₁=873 K; T₂=473 K; V constant.
+Fórmula (Gay-Lussac): P₁/T₁=P₂/T₂ → P₂ = P₁·T₂ / T₁.
+Càlcul: P₂ = 15·473 / 873 ≈ 8,13 atm.
+La pressió disminueix en refredar-se els gasos.`
+    },
+    {
+      title: "Bucejador",
+      description: "Un bucejador exhala <strong>0,5 L</strong> d'aire a <strong>4 atm</strong> de profunditat. Quin volum tindrà aquesta bombolla a la superfície (<strong>1 atm</strong>)?",
+      inputLabel: "Volum final (L):",
+      correctAnswer: 2.0,
+      tolerance: 0.05,
+      correctLaw: "B",
+      solution: `Dades: V₁=0,5 L; P₁=4 atm; P₂=1 atm; T constant.
+Fórmula (Boyle): P₁·V₁=P₂·V₂ → V₂ = P₁·V₁ / P₂.
+Càlcul: V₂ = 4·0,5 / 1 = 2 L.
+La bombolla es quadruplica en pujar.`
+    },
+    {
+      title: "Congelador Industrial",
+      description: "Un gas passa de <strong>25°C (298 K)</strong> a <strong>-80°C (193 K)</strong> en un recipient rígid. Si la pressió inicial era <strong>3 atm</strong>, quina serà la final?",
+      inputLabel: "Pressió final (atm):",
+      correctAnswer: 1.94,
+      tolerance: 0.05,
+      correctLaw: "G",
+      solution: `Dades: P₁=3 atm; T₁=298 K; T₂=193 K; V constant.
+Fórmula (Gay-Lussac): P₁/T₁=P₂/T₂ → P₂ = P₁·T₂ / T₁.
+Càlcul: P₂ = 3·193 / 298 ≈ 1,94 atm.
+Gran disminució de pressió pel refredament extrem.`
     }
   ];
-
-  // If a question does not define tolerance - this value is used
-  const defaultTolerance = 0.05;
 
   // Don't edit below this line
 </script>
@@ -163,12 +309,36 @@ El volum augmenta perquè la pressió disminueix.`
   solució pas a pas.</p>
 
 <script>
+  // Global variable to store the selected questions for this session
+  let selectedQuestions = [];
+
+  // Function to shuffle array and pick n random items
+  function getRandomQuestions(questions, n) {
+    if (n <= 0 || n >= questions.length) {
+      return [...questions]; // Return all questions if n is invalid
+    }
+
+    // Create a copy and shuffle it
+    const shuffled = [...questions];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    return shuffled.slice(0, n);
+  }
+
   // Generate slides from questionsData
   function generateSlides() {
     const slidesContainer = document.getElementById("slides");
     slidesContainer.innerHTML = '';
 
-    questionsData.forEach((question, index) => {
+    // Select random questions if not already selected
+    if (selectedQuestions.length === 0) {
+      selectedQuestions = getRandomQuestions(questionsData, numberOfQuestionsToShow);
+    }
+
+    selectedQuestions.forEach((question, index) => {
       const questionId = index + 1;
       const slideHTML = `
           <div class="slide">
@@ -229,7 +399,7 @@ El volum augmenta perquè la pressió disminueix.`
       return;
     }
 
-    const question = questionsData[n - 1]; // Direct array access using index
+    const question = selectedQuestions[n - 1]; // Use selectedQuestions instead of questionsData
     if (!question) return;
 
     const okNum = nearlyEqual(inp, question.correctAnswer, question.tolerance || defaultTolerance);
@@ -257,7 +427,7 @@ El volum augmenta perquè la pressió disminueix.`
   const slides = document.getElementById("slides");
 
   function updateSlide() {
-    const total = questionsData.length;
+    const total = selectedQuestions.length;
     slides.style.transform = "translateX(-" + (current * 100) + "%)";
   }
 
@@ -269,10 +439,18 @@ El volum augmenta perquè la pressió disminueix.`
   }
 
   function nextSlide() {
-    if (current < questionsData.length - 1) {
+    if (current < selectedQuestions.length - 1) {
       current++;
       updateSlide();
     }
+  }
+
+  // Function to regenerate random questions (useful for "New Quiz" functionality)
+  function regenerateQuestions() {
+    selectedQuestions = getRandomQuestions(questionsData, numberOfQuestionsToShow);
+    current = 0;
+    generateSlides();
+    updateSlide();
   }
 
   // Initialize the application
