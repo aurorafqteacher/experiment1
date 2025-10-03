@@ -11,24 +11,24 @@
   const questionsData = [
     {
       title: "Globus Aerostàtic",
-      description: "Un globus meteorològic conté <strong>2,5 L</strong> de gas a <strong>20°C (293 K)</strong> i <strong>1 atm</strong>. Si s'eleva i la pressió baixa a <strong>0,6 atm</strong>, quin volum ocuparà el gas?",
+      description: "Un globus meteorològic conté <strong>2,5 L</strong> de gas a <strong>20°C (293 K)</strong> i <strong>760 mmHg</strong>. Si s'eleva i la pressió baixa a <strong>0,6 atm</strong>, quin volum ocuparà el gas?",
       inputLabel: "Volum final (L):",
       correctAnswer: 4.17,
       tolerance: 0.05,
       correctLaw: "B",
-      solution: `Dades: V₁=2,5 L; P₁=1 atm; P₂=0,6 atm; T constant.
+      solution: `Dades: V₁=2,5 L; P₁=760 mmHg=1 atm; P₂=0,6 atm; T constant.
 Llei de Boyle: P₁·V₁=P₂·V₂ → V₂ = P₁·V₁ / P₂.
 Càlcul: V₂ = 1·2,5 / 0,6 ≈ 4,17 L.
 El volum augmenta perquè la pressió disminueix.`
     },
     {
       title: "Bomba d'Aire",
-      description: "Una bomba d'aire comprimeix <strong>5 L</strong> d'aire a <strong>1 atm</strong> fins a un volum de <strong>1,5 L</strong>. Quina serà la pressió final?",
+      description: "Una bomba d'aire comprimeix <strong>5 L</strong> d'aire a <strong>760 mmHg</strong> fins a un volum de <strong>1,5 L</strong>. Quina serà la pressió final?",
       inputLabel: "Pressió final (atm):",
       correctAnswer: 3.33,
       tolerance: 0.05,
       correctLaw: "B",
-      solution: `Dades: V₁=5 L; P₁=1 atm; V₂=1,5 L; T constant.
+      solution: `Dades: V₁=5 L; P₁=760 mmHg=1 atm; V₂=1,5 L; T constant.
 Llei de Boyle: P₁·V₁=P₂·V₂ → P₂ = P₁·V₁ / V₂.
 Càlcul: P₂ = 1·5 / 1,5 ≈ 3,33 atm.
 La pressió augmenta en comprimir el gas.`
@@ -59,12 +59,12 @@ El volum disminueix amb la temperatura.`
     },
     {
       title: "Escalfament d'Aire",
-      description: "L'aire d'una habitació passa de <strong>18°C (291 K)</strong> a <strong>28°C (301 K)</strong> en un recipient rígid de <strong>50 L</strong>. Si la pressió inicial era <strong>1,2 atm</strong>, quina serà la final?",
+      description: "L'aire d'una habitació passa de <strong>18°C (291 K)</strong> a <strong>28°C (301 K)</strong> en un recipient rígid de <strong>50 L</strong>. Si la pressió inicial era <strong>912 mmHg</strong>, quina serà la final?",
       inputLabel: "Pressió final (atm):",
       correctAnswer: 1.24,
       tolerance: 0.02,
       correctLaw: "G",
-      solution: `Dades: P₁=1,2 atm; T₁=18+273=291 K; T₂=28+273=301 K; V constant.
+      solution: `Dades: P₁=912 mmHg·1 atm/760 mmHg=1,2 atm; T₁=18+273=291 K; T₂=28+273=301 K; V constant.
 Llei de Gay-Lussac: P₁/T₁=P₂/T₂ → P₂ = P₁·T₂ / T₁.
 Càlcul: P₂ = 1,2·301 / 291 ≈ 1,24 atm.
 La pressió augmenta amb la temperatura.`
